@@ -44,39 +44,41 @@ jobs:
         git push
       continue-on-error: true
 
-  lint_js:
-    name: Lint and Fix JavaScript Files
-    runs-on: ubuntu-latest
+lint_js:
+  name: Lint and Fix JavaScript Files
+  runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v3
+  steps:
+  - name: Checkout Repository
+    uses: actions/checkout@v3
 
-    - name: Install Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 14
+  - name: Install Node.js
+    uses: actions/setup-node@v3
+    with:
+      node-version: 16  # Update this to Node.js 16 or higher
 
-    - name: Install ESLint
-      run: |
-        npm install eslint --global
-        npm install eslint-plugin-standard --global
+  - name: Install ESLint
+    run: |
+      npm install eslint --global
+      npm install eslint-plugin-standard --global
 
-    - name: Auto-Fix JavaScript Files
-      run: |
-        # Use ESLint to automatically fix issues
-        find ./server/database -name "*.js" -exec eslint --fix {} +
+  - name: Auto-Fix JavaScript Files
+    run: |
+      # Use ESLint to automatically fix issues
+      find ./server/database -name "*.js" -exec eslint --fix {} +
 
-    - name: Run Linter
-      run: |
-        # Run ESLint to ensure no lint issues remain
-        find ./server/database -name "*.js" -exec eslint {} +
+  - name: Run Linter
+    run: |
+      # Run ESLint to ensure no lint issues remain
+      find ./server/database -name "*.js" -exec eslint {} +
 
-    - name: Commit and Push Changes
-      run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git add .
-        git commit -m "Auto-fixed JavaScript lint issues"
-        git push
-      continue-on-error: true
+  - name: Commit and Push Changes
+    run: |
+      git config --global user.name "github-actions[bot]"
+      git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      git add .
+      git commit -m "Auto-fixed JavaScript lint issues"
+      git push
+    continue-on-error: true
+
+
