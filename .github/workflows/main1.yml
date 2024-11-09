@@ -1,0 +1,82 @@
+name: 'Lint Code'
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  lint_python:
+    name: Lint and Fix Python Files
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.12
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 autopep8
+    
+    - name: Auto-Fix Python Files
+      run: |
+        # Use autopep8 to automatically fix PEP8 issues in Python files
+        find . -name "*.py" -exec autopep8 --in-place --aggressive --aggressive {} +
+    
+    - name: Run Linter
+      run: |
+        # Run flake8 to ensure no lint issues remain
+        find . -name "*.py" -exec flake8 {} +
+
+    - name: Commit and Push Changes
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add .
+        git commit -m "Auto-fixed Python lint issues"
+        git push
+      continue-on-error: true
+
+  lint_js:
+    name: Lint and Fix JavaScript Files
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 14
+
+    - name: Install ESLint
+      run: |
+        npm install eslint --global
+        npm install eslint-plugin-standard --global
+
+    - name: Auto-Fix JavaScript Files
+      run: |
+        # Use ESLint to automatically fix issues
+        find ./server/database -name "*.js" -exec eslint --fix {} +
+
+    - name: Run Linter
+      run: |
+        # Run ESLint to ensure no lint issues remain
+        find ./server/database -name "*.js" -exec eslint {} +
+
+    - name: Commit and Push Changes
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add .
+        git commit -m "Auto-fixed JavaScript lint issues"
+        git push
+      continue-on-error: true
