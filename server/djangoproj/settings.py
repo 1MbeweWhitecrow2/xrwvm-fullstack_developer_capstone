@@ -28,9 +28,9 @@ SECRET_KEY =\
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "https://przemyslawma-8000.ropa.com"]
+ALLOWED_HOSTS = ["localhost", "https://przemyslawma-8000.com"]
 
-CSRF_TRUSTED_ORIGINS = ["https://przemyslawma-8000.ropa.com"]
+CSRF_TRUSTED_ORIGINS = ["https://przemyslawma-8000.com"]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [],
